@@ -39,9 +39,9 @@ static class UtilityFunctions
 	private static readonly Color SHIP_OUTLINE_COLOR = Color.White;
 
 	private static readonly Color MESSAGE_COLOR = SwinGame.RGBAColor(2, 167, 252, 255);
-	public const int ANIMATION_CELLS = 7;
+	public const int ANIMATION_CELLS = 6;
 
-	public const int FRAMES_PER_CELL = 8;
+	public const int FRAMES_PER_CELL = 10;
 	/// <summary>
 	/// Determines if the mouse is in a given rectangle.
 	/// </summary>
@@ -248,12 +248,12 @@ static class UtilityFunctions
 				break;
 		}
 
-		SwinGame.DrawFramerate(675, 585, GameResources.GameFont("CourierSmall"));
+		SwinGame.DrawFramerate(585, 580, GameResources.GameFont("CourierSmall"));
 	}
 
 	public static void AddExplosion(int row, int col)
 	{
-		AddAnimation(row, col, "Splash");
+		AddAnimation(row, col, "Explosion");
 	}
 
 	public static void AddSplash(int row, int col)

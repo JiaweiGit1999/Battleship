@@ -336,7 +336,7 @@ public static class GameController
 
 		UtilityFunctions.DrawAnimations ();
 
-		SwinGame.RefreshScreen ();
+		SwinGame.RefreshScreen (120);
 	}
 
 	/// <summary>
