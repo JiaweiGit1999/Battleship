@@ -19,7 +19,7 @@ public static class GameController
 	private static Player _human;
 
 	private static AIPlayer _ai;
-
+	private static Boolean mute;
 	private static Stack<GameState> _state = new Stack<GameState> ();
 
 	private static AIOption _aiSetting;
@@ -366,6 +366,18 @@ public static class GameController
 	public static void EndCurrentState ()
 	{
 		_state.Pop ();
+	}
+
+	public static void Mute ()
+	{
+		if (mute) {
+			SwinGame.SetMusicVolume (0);
+			mute = false;
+		} else {
+			SwinGame.SetMusicVolume (100);
+			mute = true;
+		}
+
 	}
 
 	/// <summary>
