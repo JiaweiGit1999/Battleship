@@ -28,7 +28,8 @@ static class MenuController
 			"SETUP",
 			"SCORES",
 			"QUIT",
-			"MUTE"
+			"MUTE",
+			"INSTRUCTIONS"
 		},
 		new string[] {
 			"RETURN",
@@ -61,6 +62,7 @@ static class MenuController
 
 	private const int MAIN_MENU_QUIT_BUTTON = 3;
 	private const int MAIN_MENU_MUTE_BUTTON = 4;
+	private const int MAIN_MENU_INSTRUCTIONS_BUTTON = 5;
 	private const int SETUP_MENU_EASY_BUTTON = 0;
 	private const int SETUP_MENU_MEDIUM_BUTTON = 1;
 	private const int SETUP_MENU_HARD_BUTTON = 2;
@@ -283,6 +285,9 @@ static class MenuController
 			break;
 		case MAIN_MENU_MUTE_BUTTON:
 			GameController.Mute ();
+			break;
+		case MAIN_MENU_INSTRUCTIONS_BUTTON:
+			GameController.AddNewState (GameState.ViewingInstructions);
 			break;
 		}
 	}
