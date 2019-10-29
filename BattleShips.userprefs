@@ -4,7 +4,7 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="images Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Battleship Status">
     <Files>
       <File FileName="src\Model\AIPlayer.cs" Line="22" Column="3" />
       <File FileName="src\Model\AIHardPlayer.cs" Line="209" Column="1" />
@@ -12,7 +12,7 @@
       <File FileName="src\GameController.cs" Line="1" Column="1" />
       <File FileName="src\GameState.cs" Line="1" Column="1" />
       <File FileName="src\GameLogic.cs" Line="39" Column="1" />
-      <File FileName="src\GameResources.cs" Line="1" Column="1" />
+      <File FileName="src\GameResources.cs" Line="57" Column="32" />
       <File FileName="src\MenuController.cs" Line="1" Column="1" />
       <File FileName="src\UtilityFunctions.cs" Line="1" Column="1" />
       <File FileName="src\DiscoveryController.cs" Line="1" Column="1" />
