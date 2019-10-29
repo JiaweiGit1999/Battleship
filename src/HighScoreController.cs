@@ -17,8 +17,8 @@ using SwinGameSDK;
 static class HighScoreController
 {
     private const int NAME_WIDTH = 3;
-    private static Button _giveUpButton = new Button("blue_button07.png");
-    private static Button _HomeButton = new Button("blue_button07.png");
+    private static Button _giveUpButton = new Button("orangeButton.png");
+    private static Button _HomeButton = new Button("purpleButton.png");
     private const int SCORES_LEFT = 490;
     /// <summary>
     /// The score structure is used to keep the name and
