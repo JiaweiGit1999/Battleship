@@ -298,7 +298,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\images\instructions.jpg" />
-    <None Include="Resources\sounds\hit.mp3" />
+    <None Include="Resources\sounds\hit.wav" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\images\blue_button07.png">
