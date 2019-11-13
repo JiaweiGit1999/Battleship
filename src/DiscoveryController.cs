@@ -1,10 +1,7 @@
-
-using Microsoft.VisualBasic;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using SwinGameSDK;
+
 
 /// <summary>
 /// The battle phase is handled by the DiscoveryController.
@@ -21,11 +18,13 @@ static class DiscoveryController
 	/// </remarks>
 	public static void HandleDiscoveryInput()
 	{
-		if (SwinGame.KeyTyped(KeyCode.vk_ESCAPE)) {
+		if (SwinGame.KeyTyped(KeyCode.vk_ESCAPE))
+		{
 			GameController.AddNewState(GameState.ViewingGameMenu);
 		}
 
-		if (SwinGame.MouseClicked(MouseButton.LeftButton)) {
+		if (SwinGame.MouseClicked(MouseButton.LeftButton))
+		{
 			DoAttack();
 		}
 	}
@@ -42,11 +41,13 @@ static class DiscoveryController
 		//Calculate the row/col clicked
 		int row = 0;
 		int col = 0;
-		row = Convert.ToInt32(Math.Floor((mouse.Y - UtilityFunctions.FIELD_TOP) / (UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP)));
-		col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FIELD_LEFT) / (UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP)));
+		row = System.Convert.ToInt32(System.Convert.ToInt32(System.Math.Floor(System.Convert.ToDouble(mouse.Y - UtilityFunctions.FIELD_TOP) / System.Convert.ToDouble(UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP))));
+		col = System.Convert.ToInt32(System.Convert.ToInt32(System.Math.Floor(System.Convert.ToDouble(mouse.X - UtilityFunctions.FIELD_LEFT) / System.Convert.ToDouble(UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP))));
 
-		if (row >= 0 & row < GameController.HumanPlayer.EnemyGrid.Height) {
-			if (col >= 0 & col < GameController.HumanPlayer.EnemyGrid.Width) {
+		if (row >= 0 & row < GameController.HumanPlayer.EnemyGrid.Height)
+		{
+			if (col >= 0 & col < GameController.HumanPlayer.EnemyGrid.Width)
+			{
 				GameController.Attack(row, col);
 			}
 		}
@@ -61,10 +62,15 @@ static class DiscoveryController
 		const int SHOTS_TOP = 157;
 		const int HITS_TOP = 206;
 		const int SPLASH_TOP = 256;
+		const int TIMER_LEFT = 350;
+		const int TIMER_TOP = 87;
 
-		if ((SwinGame.KeyDown(KeyCode.vk_LSHIFT) | SwinGame.KeyDown(KeyCode.vk_RSHIFT)) & SwinGame.KeyDown(KeyCode.vk_c)) {
+		if ((SwinGame.KeyDown(KeyCode.vk_LSHIFT) || SwinGame.KeyDown(KeyCode.vk_RSHIFT)) && SwinGame.KeyDown(KeyCode.vk_c))
+		{
 			UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer, true);
-		} else {
+		}
+		else
+		{
 			UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer, false);
 		}
 
@@ -74,13 +80,7 @@ static class DiscoveryController
 		SwinGame.DrawText(GameController.HumanPlayer.Shots.ToString(), Color.White, GameResources.GameFont("Menu"), SCORES_LEFT, SHOTS_TOP);
 		SwinGame.DrawText(GameController.HumanPlayer.Hits.ToString(), Color.White, GameResources.GameFont("Menu"), SCORES_LEFT, HITS_TOP);
 		SwinGame.DrawText(GameController.HumanPlayer.Missed.ToString(), Color.White, GameResources.GameFont("Menu"), SCORES_LEFT, SPLASH_TOP);
+		SwinGame.DrawText("TIME LEFT: " + GameController.TimeLeft(), Color.White, GameResources.GameFont("Time"), TIMER_LEFT, TIMER_TOP);
 	}
 
 }
-
-//=======================================================
-//Service provided by Telerik (www.telerik.com)
-//Conversion powered by NRefactory.
-//Twitter: @telerik
-//Facebook: facebook.com/telerik
-//=======================================================

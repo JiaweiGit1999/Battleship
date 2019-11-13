@@ -1,10 +1,5 @@
-
-using Microsoft.VisualBasic;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-
-using System.Diagnostics;
 using SwinGameSDK;
 
 /// <summary>
@@ -23,10 +18,17 @@ static class EndingGameController
 		UtilityFunctions.DrawField(GameController.ComputerPlayer.PlayerGrid, GameController.ComputerPlayer, true);
 		UtilityFunctions.DrawSmallField(GameController.HumanPlayer.PlayerGrid, GameController.HumanPlayer);
 
-		if (GameController.HumanPlayer.IsDestroyed) {
-			SwinGame.DrawTextLines("YOU LOSE!", Color.White, Color.Transparent, GameResources.GameFont("ArialLarge"), FontAlignment.AlignCenter, 0, 250, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
-		} else {
-			SwinGame.DrawTextLines("-- WINNER --", Color.White, Color.Transparent, GameResources.GameFont("ArialLarge"), FontAlignment.AlignCenter, 0, 250, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+		if ((int)SwinGame.TimerTicks(GameController.GameTimer) >= 180000)
+		{
+			SwinGame.DrawBitmap(GameResources.GameImage("YouLose"), 175, 175);
+		}
+		else if (GameController.HumanPlayer.IsDestroyed)
+		{
+			SwinGame.DrawBitmap(GameResources.GameImage("YouLose"), 175, 175);
+		}
+		else
+		{
+			SwinGame.DrawBitmap(GameResources.GameImage("YouWin"), 175, 175);
 		}
 	}
 
@@ -36,17 +38,13 @@ static class EndingGameController
 	/// </summary>
 	public static void HandleEndOfGameInput()
 	{
-		if (SwinGame.MouseClicked(MouseButton.LeftButton) || SwinGame.KeyTyped(KeyCode.vk_RETURN) || SwinGame.KeyTyped(KeyCode.vk_ESCAPE)) {
+		if (SwinGame.MouseClicked(MouseButton.LeftButton)
+			|| SwinGame.KeyTyped(KeyCode.vk_RETURN)
+			|| SwinGame.KeyTyped(KeyCode.vk_ESCAPE))
+		{
 			HighScoreController.ReadHighScore(GameController.HumanPlayer.Score);
 			GameController.EndCurrentState();
 		}
 	}
 
 }
-
-//=======================================================
-//Service provided by Telerik (www.telerik.com)
-//Conversion powered by NRefactory.
-//Twitter: @telerik
-//Facebook: facebook.com/telerik
-//=======================================================
