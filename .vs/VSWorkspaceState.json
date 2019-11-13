@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
-    "\\src\\Model"
+    "\\src"
   ],
-  "SelectedNode": "\\src\\Model\\AIHardPlayer.cs",
+  "SelectedNode": "\\BattleShips.sln",
   "PreviewInSolutionExplorer": false
 }
