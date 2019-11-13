@@ -1,10 +1,3 @@
-
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-// using System.Data;
-using System.Diagnostics;
 using SwinGameSDK;
 
 /// <summary>
@@ -13,36 +6,50 @@ using SwinGameSDK;
 /// </summary>
 public abstract class AIPlayer : Player
 {
-
+	
 	/// <summary>
 	/// Location can store the location of the last hit made by an
 	/// AI Player. The use of which determines the difficulty.
 	/// </summary>
-	protected class Location
+	public class Location
 	{
 		private int _Row;
-
 		private int _Column;
+		
 		/// <summary>
 		/// The row of the shot
 		/// </summary>
 		/// <value>The row of the shot</value>
 		/// <returns>The row of the shot</returns>
-		public int Row {
-			get { return _Row; }
-			set { _Row = value; }
+		public int Row
+		{
+			get
+			{
+				return _Row;
+			}
+			set
+			{
+				_Row = value;
+			}
 		}
-
+		
 		/// <summary>
 		/// The column of the shot
 		/// </summary>
 		/// <value>The column of the shot</value>
 		/// <returns>The column of the shot</returns>
-		public int Column {
-			get { return _Column; }
-			set { _Column = value; }
+		public int Column
+		{
+			get
+			{
+				return _Column;
+			}
+			set
+			{
+				_Column = value;
+			}
 		}
-
+		
 		/// <summary>
 		/// Sets the last hit made to the local variables
 		/// </summary>
@@ -53,7 +60,7 @@ public abstract class AIPlayer : Player
 			_Column = column;
 			_Row = row;
 		}
-
+		
 		/// <summary>
 		/// Check if two locations are equal
 		/// </summary>
@@ -62,10 +69,9 @@ public abstract class AIPlayer : Player
 		/// <returns>true if location 1 and location 2 are at the same spot</returns>
 		public static bool operator ==(Location @this, Location other)
 		{
-			return !ReferenceEquals(@this, null) && !ReferenceEquals(other, null) && @this.Row == other.Row && @this.Column == other.Column;
-			//return @this != null && other != null && @this.Row == other.Row && @this.Column == other.Column;
+			return @this != null && other != null && @this.Row == other.Row && @this.Column == other.Column;
 		}
-
+		
 		/// <summary>
 		/// Check if two locations are not equal
 		/// </summary>
@@ -77,19 +83,22 @@ public abstract class AIPlayer : Player
 			return ReferenceEquals(@this, null) || ReferenceEquals(other, null) || @this.Row != other.Row || @this.Column != other.Column;
 		}
 	}
-
-
+	
+	/// <summary>
+	/// Initializes a new instance of the AIplayer class.
+	/// </summary>
+	/// <param name="game">Game.</param>
 	public AIPlayer(BattleShipsGame game) : base(game)
 	{
 	}
-
+	
 	/// <summary>
 	/// Generate a valid row, column to shoot at
 	/// </summary>
 	/// <param name="row">output the row for the next shot</param>
 	/// <param name="column">output the column for the next show</param>
 	protected abstract void GenerateCoords(ref int row, ref int column);
-
+	
 	/// <summary>
 	/// The last shot had the following result. Child classes can use this
 	/// to prepare for the next shot.
@@ -98,7 +107,7 @@ public abstract class AIPlayer : Player
 	/// <param name="row">the row shot</param>
 	/// <param name="col">the column shot</param>
 	protected abstract void ProcessShot(int row, int col, AttackResult result);
-
+	
 	/// <summary>
 	/// The AI takes its attacks until its go is over.
 	/// </summary>
@@ -109,41 +118,35 @@ public abstract class AIPlayer : Player
 		int row = 0;
 		int column = 0;
 
-		//keep hitting until a miss
-		do {
-			Delay();
+		do //keep hitting until a miss
+		{
+			Delay ();
 
-			GenerateCoords(ref row, ref column);
-			//generate coordinates for shot
-			result = _game.Shoot(row, column);
-			//take shot
-			ProcessShot(row, column, result);
+			GenerateCoords (ref row, ref column); //generate coordinates for shot
+			result = _game.Shoot (row, column); //take shot
+			ProcessShot (row, column, result);
 		} while (result.Value != ResultOfAttack.Miss && result.Value != ResultOfAttack.GameOver && !SwinGame.WindowCloseRequested());
-
+		
 		return result;
 	}
-
+	
 	/// <summary>
 	/// Wait a short period to simulate the think time
 	/// </summary>
 	private void Delay()
 	{
 		int i = 0;
-		for (i = 0; i <= 150; i++) {
+		for (i = 0; i <= 150; i++)
+		{
 			//Dont delay if window is closed
 			if (SwinGame.WindowCloseRequested())
+			{
 				return;
-
-			SwinGame.Delay(5);
+			}
+			
+			SwinGame.Delay(0);
 			SwinGame.ProcessEvents();
 			SwinGame.RefreshScreen();
 		}
 	}
 }
-
-//=======================================================
-//Service provided by Telerik (www.telerik.com)
-//Conversion powered by NRefactory.
-//Twitter: @telerik
-//Facebook: facebook.com/telerik
-//=======================================================

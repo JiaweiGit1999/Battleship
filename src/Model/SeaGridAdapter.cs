@@ -1,19 +1,14 @@
-
-using Microsoft.VisualBasic;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-// using System.Data;
-using System.Diagnostics;
+
 /// <summary>
 /// The SeaGridAdapter allows for the change in a sea grid view. Whenever a ship is
 /// presented it changes the view into a sea tile instead of a ship tile.
 /// </summary>
 public class SeaGridAdapter : ISeaGrid
 {
-
-
+	
 	private SeaGrid _MyGrid;
+	
 	/// <summary>
 	/// Create the SeaGridAdapter, with the grid, and it will allow it to be changed
 	/// </summary>
@@ -23,58 +18,68 @@ public class SeaGridAdapter : ISeaGrid
 		_MyGrid = grid;
 		_MyGrid.Changed += new EventHandler(MyGrid_Changed);
 	}
-
+	
 	/// <summary>
 	/// MyGrid_Changed causes the grid to be redrawn by raising a changed event
 	/// </summary>
 	/// <param name="sender">the object that caused the change</param>
 	/// <param name="e">what needs to be redrawn</param>
-	private void MyGrid_Changed(object sender, EventArgs e)
+	private void MyGrid_Changed (object sender, EventArgs e)
 	{
 		if (Changed != null) {
-			Changed(this, e);
+			Changed (this, e);
 		}
 	}
-
-	#region "ISeaGrid Members"
-
+	
+#region ISeaGrid Members
+	
 	/// <summary>
 	/// Changes the discovery grid. Where there is a ship we will sea water
 	/// </summary>
 	/// <param name="x">tile x coordinate</param>
 	/// <param name="y">tile y coordinate</param>
 	/// <returns>a tile, either what it actually is, or if it was a ship then return a sea tile</returns>
-	public TileView this[int x, int y] {
-		get {
-			TileView result = _MyGrid[x, y];
-
-			if (result == TileView.Ship) {
-				return TileView.Sea;
-			} else {
-				return result;
-			}
+	public TileView Item(int x, int y) 
+	{
+		TileView result = _MyGrid.Item(x, y);
+		
+		if (result == TileView.Ship)
+		{
+			return TileView.Sea;
+		}
+		else
+		{
+			return result;
 		}
 	}
-
+	
 	/// <summary>
 	/// Indicates that the grid has been changed
 	/// </summary>
 	public event EventHandler Changed;
-
+	
 	/// <summary>
 	/// Get the width of a tile
 	/// </summary>
-	public int Width {
-		get { return _MyGrid.Width; }
+	public int Width
+	{
+		get
+		{
+			return _MyGrid.Width;
+		}
 	}
-
+	
 	/// <summary>
 	/// Get the height of the tile
 	/// </summary>
-	public int Height {
-		get { return _MyGrid.Height; }
+	public int Height
+	{
+		get
+		{
+			return _MyGrid.Height;
+		}
 	}
-
+	
 	/// <summary>
 	/// HitTile calls oppon _MyGrid to hit a tile at the row, col
 	/// </summary>
@@ -85,13 +90,6 @@ public class SeaGridAdapter : ISeaGrid
 	{
 		return _MyGrid.HitTile(row, col);
 	}
-	#endregion
-
+#endregion
+	
 }
-
-//=======================================================
-//Service provided by Telerik (www.telerik.com)
-//Conversion powered by NRefactory.
-//Twitter: @telerik
-//Facebook: facebook.com/telerik
-//=======================================================

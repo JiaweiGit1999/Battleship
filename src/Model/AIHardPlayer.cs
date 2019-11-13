@@ -1,10 +1,6 @@
-
-using Microsoft.VisualBasic;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-// using System.Data;
-using System.Diagnostics;
+
 /// <summary>
 /// AIHardPlayer is a type of player. This AI will know directions of ships
 /// when it has found 2 ship tiles and will try to destroy that ship. If that ship
@@ -14,7 +10,7 @@ using System.Diagnostics;
 /// </summary>
 public class AIHardPlayer : AIPlayer
 {
-
+	
 	/// <summary>
 	/// Target allows the AI to know more things, for example the source of a
 	/// shot target
@@ -22,49 +18,70 @@ public class AIHardPlayer : AIPlayer
 	protected class Target
 	{
 		private readonly Location _ShotAt;
-
 		private readonly Location _Source;
+		
 		/// <summary>
 		/// The target shot at
 		/// </summary>
 		/// <value>The target shot at</value>
 		/// <returns>The target shot at</returns>
-		public Location ShotAt {
-			get { return _ShotAt; }
+		public Location ShotAt
+		{
+			get
+			{
+				return _ShotAt;
+			}
 		}
-
+		
 		/// <summary>
 		/// The source that added this location as a target.
 		/// </summary>
 		/// <value>The source that added this location as a target.</value>
 		/// <returns>The source that added this location as a target.</returns>
-		public Location Source {
-			get { return _Source; }
+		public Location Source
+		{
+			get
+			{
+				return _Source;
+			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the Target class.
+		/// </summary>
+		/// <param name="shootat">Shootat.</param>
+		/// <param name="source">Source.</param>
 		internal Target(Location shootat, Location source)
 		{
 			_ShotAt = shootat;
 			_Source = source;
 		}
-
+		
 		/// <summary>
 		/// If source shot and shootat shot are on the same row then
 		/// give a boolean true
 		/// </summary>
-		public bool SameRow {
-			get { return _ShotAt.Row == _Source.Row; }
+		public bool SameRow
+		{
+			get
+			{
+				return _ShotAt.Row == _Source.Row;
+			}
 		}
-
+		
 		/// <summary>
 		/// If source shot and shootat shot are on the same column then
 		/// give a boolean true
 		/// </summary>
-		public bool SameColumn {
-			get { return _ShotAt.Column == _Source.Column; }
+		public bool SameColumn
+		{
+			get
+			{
+				return _ShotAt.Column == _Source.Column;
+			}
 		}
 	}
-
+	
 	/// <summary>
 	/// Private enumarator for AI states. currently there are two states,
 	/// the AI can be searching for a ship, or if it has found a ship it will
@@ -76,27 +93,31 @@ public class AIHardPlayer : AIPlayer
 		/// The AI is searching for its next target
 		/// </summary>
 		Searching,
-
+		
 		/// <summary>
 		/// The AI is trying to target a ship
 		/// </summary>
 		TargetingShip,
-
+		
 		/// <summary>
 		/// The AI is locked onto a ship
 		/// </summary>
 		HittingShip
 	}
-
+	
 	private AIStates _CurrentState = AIStates.Searching;
 	private Stack<Target> _Targets = new Stack<Target>();
 	private List<Target> _LastHit = new List<Target>();
-
 	private Target _CurrentTarget;
+
+	/// <summary>
+	/// Initializes a new instance of the AIHardPlayer class.
+	/// </summary>
+	/// <param name="game">Game.</param>
 	public AIHardPlayer(BattleShipsGame game) : base(game)
 	{
 	}
-
+	
 	/// <summary>
 	/// GenerateCoords will call upon the right methods to generate the appropriate shooting
 	/// coordinates
@@ -105,12 +126,14 @@ public class AIHardPlayer : AIPlayer
 	/// <param name="column">the column that will be shot at</param>
 	protected override void GenerateCoords(ref int row, ref int column)
 	{
-		do {
+		do
+		{
 			_CurrentTarget = null;
-
+			
 			//check which state the AI is in and uppon that choose which coordinate generation
 			//method will be used.
-			switch (_CurrentState) {
+			switch (_CurrentState)
+			{
 				case AIStates.Searching:
 					SearchCoords(ref row, ref column);
 					break;
@@ -119,13 +142,12 @@ public class AIHardPlayer : AIPlayer
 					TargetCoords(ref row, ref column);
 					break;
 				default:
-					throw new ApplicationException("AI has gone in an invalid state");
+					throw (new ApplicationException("AI has gone in an invalid state"));
 			}
-
-		} while ((row < 0 || column < 0 || row >= EnemyGrid.Height || column >= EnemyGrid.Width || EnemyGrid[row, column] != TileView.Sea));
-		//while inside the grid and not a sea tile do the search
+			
+		} while (row < 0 || column < 0 || row >= EnemyGrid.Height || column >= EnemyGrid.Width || EnemyGrid.Item(row, column) != TileView.Sea); //while inside the grid and not a sea tile do the search
 	}
-
+	
 	/// <summary>
 	/// TargetCoords is used when a ship has been hit and it will try and destroy
 	/// this ship
@@ -134,14 +156,14 @@ public class AIHardPlayer : AIPlayer
 	/// <param name="column">column generated around the hit tile</param>
 	private void TargetCoords(ref int row, ref int column)
 	{
-		Target t = null;
+		Target t = default(Target);
 		t = _Targets.Pop();
-
-		row = t.ShotAt.Row;
-		column = t.ShotAt.Column;
+		
+		row = System.Convert.ToInt32(t.ShotAt.Row);
+		column = System.Convert.ToInt32(t.ShotAt.Column);
 		_CurrentTarget = t;
 	}
-
+	
 	/// <summary>
 	/// SearchCoords will randomly generate shots within the grid as long as its not hit that tile already
 	/// </summary>
@@ -149,11 +171,11 @@ public class AIHardPlayer : AIPlayer
 	/// <param name="column">the generated column</param>
 	private void SearchCoords(ref int row, ref int column)
 	{
-		row = _Random.Next(0, EnemyGrid.Height);
-		column = _Random.Next(0, EnemyGrid.Width);
+		row = System.Convert.ToInt32(_Random.Next(0, EnemyGrid.Height));
+		column = System.Convert.ToInt32(_Random.Next(0, EnemyGrid.Width));
 		_CurrentTarget = new Target(new Location(row, column), null);
 	}
-
+	
 	/// <summary>
 	/// ProcessShot is able to process each shot that is made and call the right methods belonging
 	/// to that shot. For example, if its a miss = do nothing, if it's a hit = process that hit location
@@ -163,24 +185,29 @@ public class AIHardPlayer : AIPlayer
 	/// <param name="result">the result from that hit</param>
 	protected override void ProcessShot(int row, int col, AttackResult result)
 	{
-		switch (result.Value) {
-			case ResultOfAttack.Miss:
-				_CurrentTarget = null;
-				break;
-			case ResultOfAttack.Hit:
-				ProcessHit(row, col);
-				break;
-			case ResultOfAttack.Destroyed:
-				ProcessDestroy(row, col, result.Ship);
-				break;
-			case ResultOfAttack.ShotAlready:
-				throw new ApplicationException("Error in AI");
+		if (result.Value == ResultOfAttack.Miss)
+		{
+			_CurrentTarget = null;
 		}
-
+		else if (result.Value == ResultOfAttack.Hit)
+		{
+			ProcessHit(row, col);
+		}
+		else if (result.Value == ResultOfAttack.Destroyed)
+		{
+			ProcessDestroy(row, col, result.Ship);
+		}
+		else if (result.Value == ResultOfAttack.ShotAlready)
+		{
+			throw (new ApplicationException("Error in AI"));
+		}
+		
 		if (_Targets.Count == 0)
+		{
 			_CurrentState = AIStates.Searching;
+		}
 	}
-
+	
 	/// <summary>
 	/// ProcessDetroy is able to process the destroyed ships targets and remove _LastHit targets.
 	/// It will also call RemoveShotsAround to remove targets that it was going to shoot at
@@ -191,42 +218,49 @@ public class AIHardPlayer : AIPlayer
 	private void ProcessDestroy(int row, int col, Ship ship)
 	{
 		bool foundOriginal = false;
-		Location source = null;
-		Target current = null;
+		Location source = default(Location);
+		Target current = default(Target);
 		current = _CurrentTarget;
-
+		
 		foundOriginal = false;
-
+		
 		//i = 1, as we dont have targets from the current hit...
 		int i = 0;
-
-		for (i = 1; i <= ship.Hits - 1; i++) {
-			if (!foundOriginal) {
+		for (i = 1; i <= ship.Hits - 1; i++)
+		{
+			
+			if (!foundOriginal)
+			{
 				source = current.Source;
 				//Source is nnothing if the ship was originally hit in
 				// the middle. This then searched forward, rather than
 				// backward through the list of targets
-				if (source == null) {
+				if (ReferenceEquals(source, null))
+				{
 					source = current.ShotAt;
 					foundOriginal = true;
 				}
-			} else {
+			}
+			else
+			{
 				source = current.ShotAt;
 			}
-
+			
 			//find the source in _LastHit
-			foreach (Target t in _LastHit) {
-				if ((!foundOriginal && t.ShotAt == source) || (foundOriginal & t.Source == source)) {
+			foreach (Target t in _LastHit)
+			{
+				if ((!foundOriginal && t.ShotAt == source) || (foundOriginal && t.Source == source))
+				{
 					current = t;
 					_LastHit.Remove(t);
-					break; // TODO: might not be correct. Was : Exit For
+					break;
 				}
 			}
-
+			
 			RemoveShotsAround(current.ShotAt);
 		}
 	}
-
+	
 	/// <summary>
 	/// RemoveShotsAround will remove targets that belong to the destroyed ship by checking if
 	/// the source of the targets belong to the destroyed ship. If they don't put them on a new stack.
@@ -236,30 +270,34 @@ public class AIHardPlayer : AIPlayer
 	/// <param name="toRemove"></param>
 	private void RemoveShotsAround(Location toRemove)
 	{
-		Stack<Target> newStack = new Stack<Target>();
-		//create a new stack
-
+		Stack<Target> newStack = new Stack<Target>(); //create a new stack
+		
 		//check all targets in the _Targets stack
-
-		foreach (Target t in _Targets) {
+		foreach (Target t in _Targets)
+		{
+			
 			//if the source of the target does not belong to the destroyed ship put them on the newStack
-			if (!object.ReferenceEquals(t.Source, toRemove))
+			if (t.Source != toRemove)
+			{
 				newStack.Push(t);
+			}
 		}
-
-		_Targets.Clear();
-		//clear the _Targets stack
-
+		
+		_Targets.Clear(); //clear the _Targets stack
+		
 		//for all the targets in the newStack, move them back onto the _Targets stack
-		foreach (Target t in newStack) {
+		foreach (Target t in newStack)
+		{
 			_Targets.Push(t);
 		}
-
+		
 		//if the _Targets stack is 0 then change the AI's state back to searching
 		if (_Targets.Count == 0)
+		{
 			_CurrentState = AIStates.Searching;
+		}
 	}
-
+	
 	/// <summary>
 	/// ProcessHit gets the last hit location coordinates and will ask AddTarget to
 	/// create targets around that location by calling the method four times each time with
@@ -272,39 +310,45 @@ public class AIHardPlayer : AIPlayer
 	private void ProcessHit(int row, int col)
 	{
 		_LastHit.Add(_CurrentTarget);
-
+		
 		//Uses _CurrentTarget as the source
 		AddTarget(row - 1, col);
 		AddTarget(row, col - 1);
 		AddTarget(row + 1, col);
 		AddTarget(row, col + 1);
-
-		if (_CurrentState == AIStates.Searching) {
+		
+		if (_CurrentState == AIStates.Searching)
+		{
 			_CurrentState = AIStates.TargetingShip;
-		} else {
+		}
+		else
+		{
 			//either targetting or hitting... both are the same here
 			_CurrentState = AIStates.HittingShip;
-
+			
 			ReOrderTargets();
 		}
 	}
-
+	
 	/// <summary>
 	/// ReOrderTargets will optimise the targeting by re-orderin the stack that the targets are in.
 	/// By putting the most important targets at the top they are the ones that will be shot at first.
 	/// </summary>
-
 	private void ReOrderTargets()
 	{
+		
 		//if the ship is lying on the same row, call MoveToTopOfStack to optimise on the row
-		if (_CurrentTarget.SameRow) {
-			MoveToTopOfStack(_CurrentTarget.ShotAt.Row, -1);
-		} else if (_CurrentTarget.SameColumn) {
+		if (_CurrentTarget.SameRow)
+		{
+			MoveToTopOfStack(System.Convert.ToInt32(_CurrentTarget.ShotAt.Row), -1);
+		}
+		else if (_CurrentTarget.SameColumn)
+		{
 			//else if the ship is lying on the same column, call MoveToTopOfStack to optimise on the column
-			MoveToTopOfStack(-1, _CurrentTarget.ShotAt.Column);
+			MoveToTopOfStack(-1, System.Convert.ToInt32(_CurrentTarget.ShotAt.Column));
 		}
 	}
-
+	
 	/// <summary>
 	/// MoveToTopOfStack will re-order the stack by checkin the coordinates of each target
 	/// If they have the right column or row values it will be moved to the _Match stack else
@@ -319,45 +363,45 @@ public class AIHardPlayer : AIPlayer
 	{
 		Stack<Target> _NoMatch = new Stack<Target>();
 		Stack<Target> _Match = new Stack<Target>();
-
-		Target current = null;
-
-		while (_Targets.Count > 0) {
+		
+		Target current = default(Target);
+		
+		while (_Targets.Count > 0)
+		{
 			current = _Targets.Pop();
-			if (current.ShotAt.Row == row || current.ShotAt.Column == column) {
+			if (current.ShotAt.Row == row || current.ShotAt.Column == column)
+			{
 				_Match.Push(current);
-			} else {
+			}
+			else
+			{
 				_NoMatch.Push(current);
 			}
 		}
-
-		foreach (Target t in _NoMatch) {
+		
+		foreach (Target t in _NoMatch)
+		{
 			_Targets.Push(t);
 		}
-		foreach (Target t in _Match) {
+		foreach (Target t in _Match)
+		{
 			_Targets.Push(t);
 		}
 	}
-
+	
 	/// <summary>
 	/// AddTarget will add the targets it will shoot onto a stack
 	/// </summary>
 	/// <param name="row">the row of the targets location</param>
 	/// <param name="column">the column of the targets location</param>
-
 	private void AddTarget(int row, int column)
 	{
-
-		if ((row >= 0 && column >= 0 && row < EnemyGrid.Height && column < EnemyGrid.Width && EnemyGrid[row, column] == TileView.Sea)) {
+		
+		if (row >= 0 && column >= 0 && row < EnemyGrid.Height && column < EnemyGrid.Width && EnemyGrid.Item(row, column) == TileView.Sea)
+		{
+			
 			_Targets.Push(new Target(new Location(row, column), _CurrentTarget.ShotAt));
 		}
 	}
-
+	
 }
-
-//=======================================================
-//Service provided by Telerik (www.telerik.com)
-//Conversion powered by NRefactory.
-//Twitter: @telerik
-//Facebook: facebook.com/telerik
-//=======================================================
