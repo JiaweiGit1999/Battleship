@@ -1,38 +1,31 @@
-
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using SwinGameSDK;
-using System.Diagnostics;
-static class GameLogic
+
+namespace MyGame
 {
-	public static void Main()
-	{
-		//Opens a new Graphics Window
-		SwinGame.OpenGraphicsWindow("Battle Ships", 800, 600);
+    public class GameLogic
+    {
+        public static void Main()
+        {
+            //Open the game window
+            SwinGame.OpenGraphicsWindow("Battle Ships", 800, 600);
+            //SwinGame.ShowSwinGameSplashScreen();
 
-		//Load Resources
-		GameResources.LoadResources();
+            //Load Resources
+            GameResources.LoadResources();
 
-		SwinGame.PlayMusic(GameResources.GameMusic("Background"));
+            GameController.PlayMusic();
 
-		//Game Loop
-		do {
-			GameController.HandleUserInput();
-			GameController.DrawScreen();
-		} while (!(SwinGame.WindowCloseRequested() == true | GameController.CurrentState == GameState.Quitting));
+            //Run the game loop
+            while (!(true == SwinGame.WindowCloseRequested() || GameController.CurrentState == GameState.Quitting))
+            {
 
-		SwinGame.StopMusic();
+                GameController.HandleUserInput();
+                GameController.DrawScreen();
+            }
 
-		//Free Resources and Close Audio, to end the program.
-		GameResources.FreeResources();
-	}
+            SwinGame.StopMusic();
+
+            GameResources.FreeResources();
+        }
+    }
 }
-
-//=======================================================
-//Service provided by Telerik (www.telerik.com)
-//Conversion powered by NRefactory.
-//Twitter: @telerik
-//Facebook: facebook.com/telerik
-//=======================================================

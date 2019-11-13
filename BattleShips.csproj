@@ -159,6 +159,7 @@
     <None Include="Resources\fonts\maven_pro_regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\images\.DS_Store" />
     <None Include="Resources\images\blue_button07.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -304,6 +305,9 @@
     <Content Include="Resources\images\blue_button07.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\sounds\deepblue.mp3" />
+    <Content Include="Resources\sounds\Destroy1.wav" />
+    <Content Include="Resources\sounds\Destroy2.wav" />
   </ItemGroup>
   <Target Name="CopyFiles">
     <Copy SourceFiles="@(MacLibraryFiles)" DestinationFolder="$(OutDir)" />
